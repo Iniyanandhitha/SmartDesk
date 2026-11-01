@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { WorkIllustration } from '@/components/illustrations/work-illustration'
+import { apiFetch } from '@/lib/api-client'
 import {
   AlertCircle,
   Bell,
@@ -64,7 +65,7 @@ export default function Page() {
   const filtered = useMemo(() => incidents.filter((item) => `${item.title} ${item.category}`.toLowerCase().includes(search.toLowerCase())), [search])
   useEffect(() => {
     let active = true
-    fetch('/api/auth/session')
+    apiFetch('/api/auth/session', { redirectOnUnauthorized: false })
       .then(async (response) => {
         if (!active) return
         if (response.ok) {
@@ -104,6 +105,6 @@ export default function Page() {
       </section>
     </div>
     {modal && <div className="modal-backdrop" onClick={() => setModal(false)}><div className="modal" onClick={(e) => e.stopPropagation()}><div className="modal-head"><div><span className="kicker">NEW REQUEST</span><h2>Create a support ticket</h2></div><button onClick={() => setModal(false)} aria-label="Close dialog"><X size={19}/></button></div><label>What can we help with?<input placeholder="e.g. VPN is not connecting" autoFocus/></label><label>Tell us a little more<textarea placeholder="Add details that can help the support team..." rows={4}/></label><div className="modal-actions"><button className="outline-button" onClick={() => setModal(false)}>Cancel</button><button className="primary-button" onClick={() => setModal(false)}>Submit ticket</button></div></div></div>}
-    {logoutOpen && <div className="modal-backdrop" onClick={() => setLogoutOpen(false)}><div className="modal" onClick={(event) => event.stopPropagation()}><div className="modal-head"><div><span className="kicker">SESSION</span><h2>Log out of SmartDesk?</h2></div><button onClick={() => setLogoutOpen(false)} aria-label="Close dialog"><X size={19}/></button></div><p className="modal-copy">You can sign in again whenever you&apos;re ready.</p><div className="modal-actions"><button className="outline-button" onClick={() => setLogoutOpen(false)}>Cancel</button><button className="primary-button" onClick={async () => { await fetch('/api/auth/logout', { method: 'POST' }); window.location.replace('/logged-out') }}>Log out</button></div></div></div>}
+    {logoutOpen && <div className="modal-backdrop" onClick={() => setLogoutOpen(false)}><div className="modal" onClick={(event) => event.stopPropagation()}><div className="modal-head"><div><span className="kicker">SESSION</span><h2>Log out of SmartDesk?</h2></div><button onClick={() => setLogoutOpen(false)} aria-label="Close dialog"><X size={19}/></button></div><p className="modal-copy">You can sign in again whenever you&apos;re ready.</p><div className="modal-actions"><button className="outline-button" onClick={() => setLogoutOpen(false)}>Cancel</button><button className="primary-button" onClick={async () => { await apiFetch('/api/auth/logout', { method: 'POST', redirectOnUnauthorized: false }); window.location.replace('/logged-out') }}>Log out</button></div></div></div>}
   </main>
 }

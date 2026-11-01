@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
 @import './auth.css';
 
 :root { --purple:#5B4BC4; --indigo:#4A3AA8; --lavender:#DDD6FB; --pale:#EFECFC; --ink:#1C1B29; --muted:#6B6A7C; --row:#F7F7F8; --yellow:#FBD669; --line:#ECEBF2; }
